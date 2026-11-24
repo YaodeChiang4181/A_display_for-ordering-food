@@ -4,7 +4,8 @@ const stores = [
   { id: '3', name: '店家 3・綠日子沙拉', category: '輕食', kind: ['周三', '周五'], emoji: '🥗', color: '#e0ecdc', sticker: '清爽無負擔', rating: '4.9', desc: '新鮮蔬果，吃完剛好有精神', price: 95, tags: ['新鮮蔬果', '輕食'], decor: ['✳', '❋'], menu: [['酪梨雞胸能量碗', '舒肥雞胸、酪梨與藜麥', 135], ['炙燒鮭魚沙拉', '炙燒鮭魚搭配當季生菜', 155], ['香煎豆腐溫沙拉', '香煎豆腐與烤時蔬', 115], ['活力水果優格杯', '季節水果、堅果與希臘優格', 80]] },
   { id: '4', name: '店家 4・手作飯糰研究所', category: '輕食', kind: ['周四', '周五', '周六'], emoji: '🍙', color: '#f1e8d4', sticker: '快速取餐', rating: '4.7', desc: '現包現做的飽足系手作飯糰', price: 55, tags: ['手作飯糰', '方便帶著走'], decor: ['✷', '〰'], menu: [['明太子鮭魚飯糰', '炙燒明太子與鮭魚碎肉', 75], ['炙燒燒肉飯糰', '日式醬燒豬肉與海苔', 65], ['香鬆玉子飯糰', '厚煎玉子燒與特調香鬆', 55], ['韓式泡菜豆腐飯糰', '微辣泡菜與板豆腐', 60]] },
   { id: '5', name: '店家 5・午後一杯', category: '飲品', kind: ['周五', '周日'], emoji: '🧋', color: '#f1e2db', sticker: '第二杯有優惠', rating: '4.8', desc: '手搖飲與甜點，午休的小確幸', price: 45, tags: ['手搖飲', '甜點'], decor: ['✿', '☼'], menu: [['招牌珍珠鮮奶茶', '濃郁鮮奶茶配Q彈黑糖珍珠', 65], ['桂花青茶', '清香桂花與甘醇青茶', 45], ['檸檬冬瓜冰茶', '手熬冬瓜搭配新鮮檸檬', 50], ['小山園抹茶布丁', '濃郁抹茶與滑順布丁', 70]] },
-  { id: '6', name: '店家 6・烤好吃飯盒', category: '便當', kind: ['周六'], emoji: '🍛', color: '#f3e5d2', sticker: '本週新夥伴', rating: '4.6', desc: '炭香直火燒烤，配菜天天換', price: 90, tags: ['炭火燒烤', '份量十足'], decor: ['✷', '✳'], menu: [['炭烤蜜汁雞腿飯', '直火炭烤雞腿與每日配菜', 120], ['蔥鹽燒肉飯', '特製蔥鹽醬與炭香豬五花', 110], ['鹽烤鯖魚雙拼飯', '鹽烤鯖魚、唐揚雞雙拼', 135], ['烤時蔬菇菇飯', '季節蔬菜與香烤綜合菇', 100]] }
+  { id: '6', name: '店家 6・烤好吃飯盒', category: '便當', kind: ['周六'], emoji: '🍛', color: '#f3e5d2', sticker: '本週新夥伴', rating: '4.6', desc: '炭香直火燒烤，配菜天天換', price: 90, tags: ['炭火燒烤', '份量十足'], decor: ['✷', '✳'], menu: [['炭烤蜜汁雞腿飯', '直火炭烤雞腿與每日配菜', 120], ['蔥鹽燒肉飯', '特製蔥鹽醬與炭香豬五花', 110], ['鹽烤鯖魚雙拼飯', '鹽烤鯖魚、唐揚雞雙拼', 135], ['烤時蔬菇菇飯', '季節蔬菜與香烤綜合菇', 100]] },
+  { id: '7', name: '店家 7・義式料理', category: '輕食', kind: ['周一', '周二', '周日'], emoji: '🍛', color: '#f3e5d2', sticker: '本週新夥伴', rating: '4.4', desc: '義心一義為了你', price: 90, tags: ['精心手工', '美味'], decor: ['✿', '✳'], menu: [['鮮蔬雞腿排義大利麵', '奶油海鮮義大利麵', 110], ['羅勒海鮮義大利麵', '青醬海鮮義大利麵', 130], ['燻雞起司捲', '火腿蛋三明治', 70], ['烤時蔬菇菇飯', '季節蔬菜與香烤綜合菇', 100]] }
 ];
 
 const $ = (s, root = document) => root.querySelector(s);
@@ -78,7 +79,13 @@ function checkout() {
 
 $('#store-total').textContent = String(stores.length).padStart(2, '0');
 renderStores(); renderCart();
-$('#search-stores').addEventListener('input', renderStores); $('#category-filter').addEventListener('change', () => { const selected = $('#category-filter').value; $$('.chip').forEach(chip => chip.classList.toggle('selected', chip.dataset.category === selected)); renderStores() });
+$('#search-stores').addEventListener('input', renderStores); $('#category-filter').addEventListener('change', renderStores); $$('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    $$('.chip').forEach(item => item.classList.remove('selected'));
+    chip.classList.add('selected');
+    renderStores();
+  });
+});
 $$('.chip').forEach(chip => chip.addEventListener('click', () => { $$('.chip').forEach(item => item.classList.remove('selected')); chip.classList.add('selected'); $('#category-filter').value = chip.dataset.category; renderStores() }));
 $('#open-cart').addEventListener('click', showCart); $('#overlay').addEventListener('click', hideCart); $$('[data-close]').forEach(button => button.addEventListener('click', hideCart)); $$('[data-menu-close]').forEach(button => button.addEventListener('click', () => $('#menu-dialog').close()));
 $('#clear-cart').addEventListener('click', () => { if (!cart.length) return; cart = []; persist(); renderCart(); showToast('購物車已清空') }); $('#checkout').addEventListener('click', checkout); $$('[data-checkout-close]').forEach(button => button.addEventListener('click', () => $('#checkout-dialog').close()));
