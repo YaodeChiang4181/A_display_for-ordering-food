@@ -77,17 +77,13 @@ function checkout() {
   cart = []; persist(); renderCart(); hideCart(); $('#checkout-dialog').showModal();
 }
 
-$('#store-total').textContent = String(stores.length).padStart(2, '0');
-renderStores(); renderCart();
-$('#search-stores').addEventListener('input', renderStores); $('#category-filter').addEventListener('change', renderStores); $$('.chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    $$('.chip').forEach(item => item.classList.remove('selected'));
-    chip.classList.add('selected');
-    renderStores();
-  });
-});
-$$('.chip').forEach(chip => chip.addEventListener('click', () => { $$('.chip').forEach(item => item.classList.remove('selected')); chip.classList.add('selected'); $('#category-filter').value = chip.dataset.category; renderStores() }));
-$('#open-cart').addEventListener('click', showCart); $('#overlay').addEventListener('click', hideCart); $$('[data-close]').forEach(button => button.addEventListener('click', hideCart)); $$('[data-menu-close]').forEach(button => button.addEventListener('click', () => $('#menu-dialog').close()));
-$('#clear-cart').addEventListener('click', () => { if (!cart.length) return; cart = []; persist(); renderCart(); showToast('購物車已清空') }); $('#checkout').addEventListener('click', checkout); $$('[data-checkout-close]').forEach(button => button.addEventListener('click', () => $('#checkout-dialog').close()));
+$('#store-total').textContent = String(stores.length).padStart(2, '0'); renderStores(); renderCart();
+$('#search-stores').addEventListener('input', renderStores); $('#category-filter').addEventListener('change', renderStores);
+$$('.chip').forEach(chip => { chip.addEventListener('click', () => { $$('.chip').forEach(item => item.classList.remove('selected')); chip.classList.add('selected'); renderStores(); }); });
+$('#open-cart').addEventListener('click', showCart); $('#overlay').addEventListener('click', hideCart);
+$$('[data-close]').forEach(button => button.addEventListener('click', hideCart));
+$$('[data-menu-close]').forEach(button => button.addEventListener('click', () => $('#menu-dialog').close()));
+$('#clear-cart').addEventListener('click', () => { if (!cart.length) return; cart = []; persist(); renderCart(); showToast('購物車已清空') });
+$('#checkout').addEventListener('click', checkout); $$('[data-checkout-close]').forEach(button => button.addEventListener('click', () => $('#checkout-dialog').close()));
 $('#menu-dialog').addEventListener('click', event => { if (event.target === $('#menu-dialog')) $('#menu-dialog').close() });
 document.addEventListener('keydown', event => { if (event.key === 'Escape' && !$('#cart-panel').classList.contains('hidden')) hideCart() });
