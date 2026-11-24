@@ -117,13 +117,7 @@ function renderStores() {
   $('#empty-search').classList.toggle('hidden', filtered.length > 0);
   $$('.store-card').forEach(card => { card.addEventListener('click', () => openMenu(card.dataset.store)); card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openMenu(card.dataset.store) } }) });
 }
-function openMenu(id) {
-  currentStore = findStore(id); if (!currentStore) return;
-  $('#menu-title').textContent = currentStore.name; $('#menu-description').textContent = currentStore.desc; $('#menu-tag').textContent = currentStore.kind; $('#menu-emoji').textContent = currentStore.emoji; $('#menu-cover').style.setProperty('--cover', currentStore.color);
-  $('#menu-list').innerHTML = currentStore.menu.map((item, i) => `<article class="menu-item"><div><h3>${escapeHtml(item[0])}</h3><p>${escapeHtml(item[1])}</p></div><div class="menu-item-price">${money(item[2])}</div><button data-add="${i}">＋ 加入購物車</button></article>`).join('');
-  $$('#menu-list [data-add]').forEach(button => button.addEventListener('click', () => addItem(currentStore, Number(button.dataset.add))));
-  $('#menu-dialog').showModal();
-}
+
 const WEEK_DAYS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
 
 function renderCart() {
@@ -165,16 +159,7 @@ function renderCart() {
   $('#cart-total').textContent = money(totalAmount);
 }
 
-function renderCart() {
-  const itemCount = cart.reduce((sum, row) => sum + row.qty, 0); const total = cart.reduce((sum, row) => sum + findStore(row.storeId).menu[row.itemIndex][2] * row.qty, 0);
-  $('#cart-count').textContent = itemCount; $('#panel-count').textContent = itemCount ? `・${itemCount} 項` : ''; $('#cart-total').textContent = money(total);
-  $('#cart-empty').classList.toggle('hidden', cart.length > 0); $('#cart-footer').classList.toggle('hidden', cart.length === 0);
-  const groups = stores.map(store => ({ store, items: cart.filter(row => row.storeId === store.id) })).filter(group => group.items.length);
-  $('#cart-items').innerHTML = groups.map(({ store, items }) => `<section class="cart-group"><div class="cart-group-title"><span>${escapeHtml(store.name)}</span><span>${items.reduce((sum, row) => sum + row.qty, 0)} 份</span></div>${items.map(row => { const item = store.menu[row.itemIndex]; return `<article class="cart-row"><div><div class="cart-row-name">${escapeHtml(item[0])}</div><div class="cart-row-detail">${money(item[2])} × ${row.qty}</div><div class="cart-row-actions"><div class="qty-control"><button data-qty="-1" data-store="${store.id}" data-index="${row.itemIndex}" aria-label="減少數量">−</button><span>${row.qty}</span><button data-qty="1" data-store="${store.id}" data-index="${row.itemIndex}" aria-label="增加數量">＋</button></div><button class="remove-item" data-remove="${store.id}" data-index="${row.itemIndex}">刪除</button></div></div><div class="cart-row-price">${money(item[2] * row.qty)}</div></article>` }).join('')}</section>`).join('');
-  $$('[data-qty]').forEach(button => button.addEventListener('click', () => changeQty(button.dataset.store, Number(button.dataset.index), Number(button.dataset.qty))));
-  $$('[data-remove]').forEach(button => button.addEventListener('click', () => removeItem(button.dataset.store, Number(button.dataset.index))));
-}
-function changeQty(storeId, index, delta) { const row = cart.find(item => item.storeId === storeId && item.itemIndex === index); if (!row) return; row.qty += delta; if (row.qty <= 0) cart = cart.filter(item => item !== row); persist(); renderCart() }
+
 function removeItem(storeId, index) { cart = cart.filter(item => !(item.storeId === storeId && item.itemIndex === index)); persist(); renderCart(); showToast('已刪除這項餐點') }
 function showCart() {
   $('#cart-panel').classList.remove('hidden'); $('#cart-panel').setAttribute('aria-hidden', 'false'); $('#overlay').classList.remove('hidden'); requestAnimationFrame(() => { $('#overlay').classList.add('visible'); $('#cart-panel').classList.add('visible') }); document.body.style.overflow = 'hidden';
