@@ -21,10 +21,13 @@ function persist() { try { localStorage.setItem('yi-ding-cart', JSON.stringify(c
 function renderStores() {
   const term = $('#search-stores').value.trim().toLowerCase();
   const category = $('#category-filter').value;
-  const chosen = $('#category-chips .selected')?.dataset.category || '全部';
+  const chosenDay = $('#category-chips .selected')?.dataset.kind || '全部';
   const filtered = stores.filter(store => {
-    const searchable = [store.name, store.desc, store.kind, ...store.menu.map(item => item[0])].join(' ').toLowerCase();
-    return (!term || searchable.includes(term)) && (category === '全部' || store.category === category) && (chosen === '全部' || store.category === chosen);
+    const searchable = [store.name, store.desc, ...store.kind, ...store.menu.map(item => item[0])].join(' ').toLowerCase();
+    const matchTerm = !term || searchable.includes(term);
+    const matchCategory = category === '全部' || store.category === category;
+    const matchDay = chosenDay === '全部' || store.kind.includes(chosenDay);
+    return matchTerm && matchCategory && matchDay;
   });
   $('#store-grid').innerHTML = filtered.map(store => `<article class="store-card" data-store="${store.id}" tabindex="0" role="button" aria-label="打開${escapeHtml(store.name)}菜單">
     <div class="store-visual" style="background:${store.color}"><span class="visual-sticker">${escapeHtml(store.sticker)}</span><span class="visual-illustration a">${store.decor[0]}</span><span class="store-emoji">${store.emoji}</span><span class="visual-illustration b">${store.decor[1]}</span></div>
