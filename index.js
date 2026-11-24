@@ -16,7 +16,87 @@ const findStore = id => stores.find(store => store.id === id);
 let cart = loadCart();
 let currentStore = null;
 let toastTimer;
+let selectedOrderDay = '周一'; // 記錄目前菜單彈窗選中的預訂星期
 
+
+function openMenu(id) {
+  currentStore = findStore(id);
+  if (!currentStore) return;
+
+  // 1. 判斷目前篩選器選中的星期
+  const filterDay = $('#category-chips .selected')?.dataset.kind || '全部';
+  // 若篩選器選了特定星期且該店有營業，就帶入該星期；否則預設選該店第一個營業日
+  selectedOrderDay = (filterDay !== '全部' && currentStore.kind.includes(filterDay))
+    ? filterDay
+    : currentStore.kind[0];
+
+  $('#menu-title').textContent = currentStore.name;
+  $('#menu-description').textContent = currentStore.desc;
+
+  // 2. 在菜單內渲染營業日切換按鈕（讓使用者可自由切換要訂哪一天）
+  const daySelector = $('#menu-day-selector');
+  if (daySelector) {
+    daySelector.innerHTML = currentStore.kind.map(day => `
+      <button type="button" class="day-pill ${day === selectedOrderDay ? 'selected' : ''}" data-day="${day}">
+        ${day}
+      </button>
+    `).join('');
+
+    $$('.day-pill', daySelector).forEach(btn => {
+      btn.addEventListener('click', () => {
+        $$('.day-pill', daySelector).forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedOrderDay = btn.dataset.day;
+      });
+    });
+  }
+
+  // 3. 渲染菜單項目（加入購物車時帶入 selectedOrderDay）
+  $('#menu-list').innerHTML = currentStore.menu.map((item, i) => `
+    <article class="menu-item">
+      <div><h3>${escapeHtml(item[0])}</h3><p>${escapeHtml(item[1])}</p></div>
+      <div class="menu-item-actions">
+        <strong>${money(item[2])}</strong>
+        <button type="button" class="add-item" data-index="${i}">+ 加入</button>
+      </div>
+    </article>
+  `).join('');
+
+  $$('.add-item', $('#menu-list')).forEach(btn => {
+    btn.addEventListener('click', () => addToCart(currentStore.id, Number(btn.dataset.index), selectedOrderDay));
+  });
+
+  $('#menu-dialog').showModal();
+}
+function addToCart(storeId, itemIndex, day) {
+  const existing = cart.find(row => row.storeId === storeId && row.itemIndex === itemIndex && row.day === day);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ storeId, itemIndex, day, qty: 1 });
+  }
+  persist();
+  renderCart();
+  showToast(`已加入 ${day} 訂單`);
+}
+
+function changeQty(storeId, itemIndex, day, delta) {
+  const row = cart.find(item => item.storeId === storeId && item.itemIndex === itemIndex && item.day === day);
+  if (!row) return;
+  row.qty += delta;
+  if (row.qty <= 0) {
+    removeItem(storeId, itemIndex, day);
+    return;
+  }
+  persist();
+  renderCart();
+}
+
+function removeItem(storeId, itemIndex, day) {
+  cart = cart.filter(item => !(item.storeId === storeId && item.itemIndex === itemIndex && item.day === day));
+  persist();
+  renderCart();
+}
 function loadCart() { try { return JSON.parse(localStorage.getItem('yi-ding-cart') || '[]') } catch { return [] } }
 function persist() { try { localStorage.setItem('yi-ding-cart', JSON.stringify(cart)) } catch { } }
 function renderStores() {
@@ -44,11 +124,47 @@ function openMenu(id) {
   $$('#menu-list [data-add]').forEach(button => button.addEventListener('click', () => addItem(currentStore, Number(button.dataset.add))));
   $('#menu-dialog').showModal();
 }
-function addItem(store, index) {
-  const menuItem = store.menu[index]; const existing = cart.find(row => row.storeId === store.id && row.itemIndex === index);
-  if (existing) existing.qty++; else cart.push({ storeId: store.id, itemIndex: index, qty: 1 });
-  persist(); renderCart(); showToast(`已加入 ${menuItem[0]}`);
+const WEEK_DAYS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+
+function renderCart() {
+  const totalQty = cart.reduce((sum, row) => sum + row.qty, 0);
+  $('#cart-count').textContent = totalQty;
+
+  if (!cart.length) {
+    $('#cart-items').innerHTML = '<p class="empty-cart">購物車還是空的，快去挑幾樣吧！</p>';
+    $('#cart-total').textContent = money(0);
+    return;
+  }
+
+  // 按照周一到周日排序
+  const sortedCart = [...cart].sort((a, b) => WEEK_DAYS.indexOf(a.day) - WEEK_DAYS.indexOf(b.day));
+
+  let totalAmount = 0;
+  $('#cart-items').innerHTML = sortedCart.map(row => {
+    const store = findStore(row.storeId);
+    const item = store.menu[row.itemIndex];
+    const subtotal = item[2] * row.qty;
+    totalAmount += subtotal;
+
+    return `
+      <div class="cart-row">
+        <div>
+          <span class="cart-day-badge">[${row.day}]</span>
+          <strong>${escapeHtml(item[0])}</strong>
+          <small>${escapeHtml(store.name)} · ${money(item[2])}</small>
+        </div>
+        <div class="cart-row-controls">
+          <button type="button" onclick="changeQty('${row.storeId}', ${row.itemIndex}, '${row.day}', -1)">-</button>
+          <span>${row.qty}</span>
+          <button type="button" onclick="changeQty('${row.storeId}', ${row.itemIndex}, '${row.day}', 1)">+</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  $('#cart-total').textContent = money(totalAmount);
 }
+
 function renderCart() {
   const itemCount = cart.reduce((sum, row) => sum + row.qty, 0); const total = cart.reduce((sum, row) => sum + findStore(row.storeId).menu[row.itemIndex][2] * row.qty, 0);
   $('#cart-count').textContent = itemCount; $('#panel-count').textContent = itemCount ? `・${itemCount} 項` : ''; $('#cart-total').textContent = money(total);
@@ -68,13 +184,86 @@ function hideCart() {
 }
 function showToast(message) { const toast = $('#toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2100) }
 function checkout() {
-  if (!cart.length) { showToast('先挑幾樣喜歡的餐點吧！'); return }
-  const snapshot = cart.map(row => ({ ...row })); const groups = stores.map(store => ({ store, items: snapshot.filter(row => row.storeId === store.id) })).filter(group => group.items.length);
-  $('#order-summary').innerHTML = groups.map(({ store, items }) => `<div class="summary-group"><span>${escapeHtml(store.name)} · ${items.reduce((sum, row) => sum + row.qty, 0)} 份餐點</span><span>${money(items.reduce((sum, row) => sum + store.menu[row.itemIndex][2] * row.qty, 0))}</span></div>`).join('');
-  $('#success-total').textContent = money(snapshot.reduce((sum, row) => sum + findStore(row.storeId).menu[row.itemIndex][2] * row.qty, 0));
-  const order = { id: `YD${Date.now().toString().slice(-7)}`, placedAt: new Date().toISOString(), cutoff: '11:00', pickup: '12:10 – 12:40', status: '已收單，等待截單彙整', groups: groups.map(({ store, items }) => ({ store: store.name, storeId: store.id, items: items.map(row => ({ name: store.menu[row.itemIndex][0], qty: row.qty, unitPrice: store.menu[row.itemIndex][2] })) })) };
-  try { const orders = JSON.parse(localStorage.getItem('yi-ding-orders') || '[]'); orders.unshift(order); localStorage.setItem('yi-ding-orders', JSON.stringify(orders.slice(0, 30))) } catch { }
-  cart = []; persist(); renderCart(); hideCart(); $('#checkout-dialog').showModal();
+  if (!cart.length) {
+    showToast('先挑幾樣喜歡的餐點吧！');
+    return;
+  }
+
+  const orderId = `YD${Date.now().toString().slice(-7)}`;
+  const placedAt = new Date().toISOString();
+
+  // 1. 整理使用者端總訂單與畫面摘要（依星期排序）
+  const sortedSnapshot = [...cart]
+    .sort((a, b) => WEEK_DAYS.indexOf(a.day) - WEEK_DAYS.indexOf(b.day))
+    .map(row => {
+      const store = findStore(row.storeId);
+      const item = store.menu[row.itemIndex];
+      return {
+        ...row,
+        storeName: store.name,
+        itemName: item[0],
+        unitPrice: item[2],
+        subtotal: item[2] * row.qty
+      };
+    });
+
+  // 2. 派發至商家端資料結構（依「商家 + 星期」分單，存入 yi-ding-merchant-orders）
+  const merchantDispatchMap = {};
+  sortedSnapshot.forEach(entry => {
+    const key = `${entry.storeId}_${entry.day}`;
+    if (!merchantDispatchMap[key]) {
+      merchantDispatchMap[key] = {
+        merchantOrderId: `${orderId}-${entry.storeId}-${entry.day}`,
+        parentOrderId: orderId,
+        storeId: entry.storeId,
+        storeName: entry.storeName,
+        targetDay: entry.day,
+        status: 'pending', // 商家端初始狀態：待接單
+        placedAt,
+        items: [],
+        totalAmount: 0
+      };
+    }
+    merchantDispatchMap[key].items.push({
+      itemIndex: entry.itemIndex,
+      itemName: entry.itemName,
+      unitPrice: entry.unitPrice,
+      qty: entry.qty,
+      subtotal: entry.subtotal
+    });
+    merchantDispatchMap[key].totalAmount += entry.subtotal;
+  });
+
+  try {
+    // 寫入商家端佇列（供日後商家後台讀取）
+    const merchantOrders = JSON.parse(localStorage.getItem('yi-ding-merchant-orders') || '[]');
+    merchantOrders.unshift(...Object.values(merchantDispatchMap));
+    localStorage.setItem('yi-ding-merchant-orders', JSON.stringify(merchantOrders));
+
+    // 寫入使用者端歷史訂單
+    const userOrders = JSON.parse(localStorage.getItem('yi-ding-orders') || '[]');
+    userOrders.unshift({ id: orderId, placedAt, items: sortedSnapshot });
+    localStorage.setItem('yi-ding-orders', JSON.stringify(userOrders));
+  } catch (e) {
+    console.error('儲存訂單失敗:', e);
+  }
+
+  // 3. 更新結帳成功彈窗畫面
+  const totalMoney = sortedSnapshot.reduce((sum, item) => sum + item.subtotal, 0);
+  $('#order-summary').innerHTML = sortedSnapshot.map(item => `
+    <div class="summary-group">
+      <span>[${item.day}] ${escapeHtml(item.storeName)} ・ ${escapeHtml(item.itemName)} × ${item.qty}</span>
+      <strong>${money(item.subtotal)}</strong>
+    </div>
+  `).join('');
+  $('#success-total').textContent = money(totalMoney);
+
+  // 4. 清空購物車並顯示完成彈窗
+  cart = [];
+  persist();
+  renderCart();
+  hideCart();
+  $('#checkout-dialog').showModal();
 }
 
 $('#store-total').textContent = String(stores.length).padStart(2, '0'); renderStores(); renderCart();
