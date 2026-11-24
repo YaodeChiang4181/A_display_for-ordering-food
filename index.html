@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="zh-Hant">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,29 +9,146 @@
   <title>一起訂｜校園揪團點餐</title>
   <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
-  <div class="announcement"><span class="live-dot"></span> 今日午餐團購進行中 <span class="announcement-divider">·</span> <span id="cutoff-copy">11:00 截單，記得把握時間</span></div>
+  <div class="announcement"><span class="live-dot"></span> 今日午餐團購進行中 <span class="announcement-divider">·</span> <span
+      id="cutoff-copy">11:00 截單，記得把握時間</span></div>
   <header class="topbar">
-    <a class="brand" href="#top" aria-label="一起訂首頁"><span class="brand-mark">ㄧ</span><span>一起訂<small>校園團購吃飯趣</small></span></a>
-    <nav class="desktop-nav" aria-label="主要導覽"><a class="active" href="#stores">找店家</a><a href="#how-it-works">怎麼運作</a></nav>
-    <button class="cart-button" id="open-cart" aria-label="打開購物車"><span class="cart-icon">🛒</span><span class="cart-label">購物車</span><span class="cart-count" id="cart-count">0</span></button>
+    <a class="brand" href="#top" aria-label="一起訂首頁"><span
+        class="brand-mark">ㄧ</span><span>一起訂<small>校園團購吃飯趣</small></span></a>
+    <nav class="desktop-nav" aria-label="主要導覽"><a class="active" href="#stores">找店家</a><a href="#how-it-works">怎麼運作</a>
+    </nav>
+    <button class="cart-button" id="open-cart" aria-label="打開購物車"><span class="cart-icon">🛒</span><span
+        class="cart-label">購物車</span><span class="cart-count" id="cart-count">0</span></button>
   </header>
   <main id="top">
     <section class="hero">
-      <div class="hero-copy"><div class="eyebrow"><span class="sparkle">✳</span> 今天想吃什麼？</div><h1>午餐別擠了，<br>一起訂<span class="text-accent">剛剛好。</span></h1><p>揪同學一起點，店家統一備餐。到時間自己去取餐，午休不用再排長隊。</p><div class="hero-actions"><a class="button button-dark" href="#stores">逛逛合作店家 <span>↘</span></a><span class="hero-note">目前有 <b id="store-total">6</b> 間店家接單</span></div></div>
-      <div class="hero-art" aria-label="午餐插畫"><div class="art-sun"></div><div class="art-label">LUNCH<br>TOGETHER</div><div class="food-card"><span class="food-squiggle">〰</span><span class="food-bowl">🍱</span><span class="food-leaf">✳</span></div><div class="art-sticker sticker-one">今天吃飽飽</div><div class="art-sticker sticker-two">團購中！</div><div class="art-ground"></div><div class="art-caption">GOOD FOOD, GOOD MOOD</div></div>
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="sparkle">✳</span> 今天想吃什麼？</div>
+        <h1>午餐別擠了，<br>一起訂<span class="text-accent">剛剛好。</span></h1>
+        <p>揪同學一起點，店家統一備餐。到時間自己去取餐，午休不用再排長隊。</p>
+        <div class="hero-actions"><a class="button button-dark" href="#stores">逛逛合作店家 <span>↘</span></a><span
+            class="hero-note">目前有 <b id="store-total">6</b> 間店家接單</span></div>
+      </div>
+      <div class="hero-art" aria-label="午餐插畫">
+        <div class="art-sun"></div>
+        <div class="art-label">LUNCH<br>TOGETHER</div>
+        <div class="food-card"><span class="food-squiggle">〰</span><span class="food-bowl">🍱</span><span
+            class="food-leaf">✳</span></div>
+        <div class="art-sticker sticker-one">今天吃飽飽</div>
+        <div class="art-sticker sticker-two">團購中！</div>
+        <div class="art-ground"></div>
+        <div class="art-caption">GOOD FOOD, GOOD MOOD</div>
+      </div>
     </section>
-    <section class="order-status" aria-label="本次團購資訊"><div class="status-item"><span class="status-icon peach">◷</span><span><small>午餐截單時間</small><b>今天 11:00</b></span></div><div class="status-divider"></div><div class="status-item"><span class="status-icon green">↗</span><span><small>預計取餐時間</small><b>今天 12:10 – 12:40</b></span></div><div class="status-spacer"></div><div class="status-message"><span class="live-dot"></span> 訂單會在截單後送給各店家</div></section>
-    <section class="stores-section" id="stores"><div class="section-heading"><div><div class="eyebrow">CURATED FOR CAMPUS</div><h2>今天的好店，<span>慢慢挑。</span></h2><p>每一間都是午休好夥伴，選好就放進購物車吧。</p></div><div class="store-controls"><label class="search-box"><span>⌕</span><input id="search-stores" type="search" placeholder="搜尋店家或餐點" aria-label="搜尋店家或餐點"></label><select id="category-filter" aria-label="篩選餐點類型"><option value="全部">全部類型</option><option>便當</option><option>麵食</option><option>輕食</option><option>飲品</option></select></div></div><div class="category-chips" id="category-chips"><button class="chip selected" data-category="全部">全部 <span>06</span></button><button class="chip" data-category="便當">暖心便當</button><button class="chip" data-category="麵食">麵食湯品</button><button class="chip" data-category="輕食">輕食小點</button><button class="chip" data-category="飲品">飲品甜點</button></div><div class="store-grid" id="store-grid"></div><div class="empty-search hidden" id="empty-search">沒有找到符合的店家，換個關鍵字試試看吧。</div></section>
-    <section class="how-section" id="how-it-works"><div class="how-heading"><span class="eyebrow">SIMPLE AS 1, 2, 3</span><h2>三步驟，午餐搞定。</h2></div><div class="steps"><article><span class="step-number">01</span><span class="step-emoji">🥢</span><h3>挑一間喜歡的店</h3><p>瀏覽合作店家和菜單，想吃什麼就點什麼。</p></article><article><span class="step-number">02</span><span class="step-emoji">🛍️</span><h3>放進購物車結帳</h3><p>可以混搭不同店家，送出前再確認一次。</p></article><article><span class="step-number">03</span><span class="step-emoji">🏃</span><h3>看時間，自己取餐</h3><p>截單後店家收到彙整訂單，餐點做好就去取餐。</p></article></div></section>
-    <section class="bottom-cta"><div><span>小小團購，大大滿足。</span><h2>找到你的午餐好隊友了嗎？</h2></div><a class="button button-light" href="#stores">去找好吃的 <span>↗</span></a><div class="cta-doodle">✳</div></section>
+    <section class="order-status" aria-label="本次團購資訊">
+      <div class="status-item"><span class="status-icon peach">◷</span><span><small>午餐截單時間</small><b>今天 11:00</b></span>
+      </div>
+      <div class="status-divider"></div>
+      <div class="status-item"><span class="status-icon green">↗</span><span><small>預計取餐時間</small><b>今天 12:10 –
+            12:40</b></span></div>
+      <div class="status-spacer"></div>
+      <div class="status-message"><span class="live-dot"></span> 訂單會在截單後送給各店家</div>
+    </section>
+    <section class="stores-section" id="stores">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">CURATED FOR CAMPUS</div>
+          <h2>今天的好店，<span>慢慢挑。</span></h2>
+          <p>每一間都是午休好夥伴，選好就放進購物車吧。</p>
+        </div>
+        <div class="store-controls"><label class="search-box"><span>⌕</span><input id="search-stores" type="search"
+              placeholder="搜尋店家或餐點" aria-label="搜尋店家或餐點"></label><select id="category-filter" aria-label="篩選餐點類型">
+            <option value="全部">全部類型</option>
+            <option>便當</option>
+            <option>麵食</option>
+            <option>輕食</option>
+            <option>飲品</option>
+          </select></div>
+      </div>
+      <div class="category-chips" id="category-chips"><button class="chip selected" data-category="全部">全部
+          <span>06</span></button><button class="chip" data-kind="周一">周一</button><button class="chip"
+          data-kind="周二">周二</button><button class="chip" data-kind="周三">周三</button><button class="chip"
+          data-kind="周四">周四</button><button class="chip" data-kind="周五">周五</button><button class="chip"
+          data-kind="周六">周六</button><button class="chip" data-kind="周日">周日</button></div>
+      <div class="store-grid" id="store-grid"></div>
+      <div class="empty-search hidden" id="empty-search">沒有找到符合的店家，換個關鍵字試試看吧。</div>
+    </section>
+    <section class="how-section" id="how-it-works">
+      <div class="how-heading"><span class="eyebrow">SIMPLE AS 1, 2, 3</span>
+        <h2>三步驟，午餐搞定。</h2>
+      </div>
+      <div class="steps">
+        <article><span class="step-number">01</span><span class="step-emoji">🥢</span>
+          <h3>挑一間喜歡的店</h3>
+          <p>瀏覽合作店家和菜單，想吃什麼就點什麼。</p>
+        </article>
+        <article><span class="step-number">02</span><span class="step-emoji">🛍️</span>
+          <h3>放進購物車結帳</h3>
+          <p>可以混搭不同店家，送出前再確認一次。</p>
+        </article>
+        <article><span class="step-number">03</span><span class="step-emoji">🏃</span>
+          <h3>看時間，自己取餐</h3>
+          <p>截單後店家收到彙整訂單，餐點做好就去取餐。</p>
+        </article>
+      </div>
+    </section>
+    <section class="bottom-cta">
+      <div><span>小小團購，大大滿足。</span>
+        <h2>找到你的午餐好隊友了嗎？</h2>
+      </div><a class="button button-light" href="#stores">去找好吃的 <span>↗</span></a>
+      <div class="cta-doodle">✳</div>
+    </section>
   </main>
-  <footer class="footer"><a class="brand footer-brand" href="#top"><span class="brand-mark">ㄧ</span><span>一起訂<small>校園團購吃飯趣</small></span></a><span>好好吃飯，一起訂就對了。 <span class="footer-heart">♥</span></span><span>校園揪團點餐 · DEMO</span></footer>
+  <footer class="footer"><a class="brand footer-brand" href="#top"><span
+        class="brand-mark">ㄧ</span><span>一起訂<small>校園團購吃飯趣</small></span></a><span>好好吃飯，一起訂就對了。 <span
+        class="footer-heart">♥</span></span><span>校園揪團點餐 · DEMO</span></footer>
   <div class="overlay hidden" id="overlay"></div>
-  <aside class="side-panel hidden" id="cart-panel" aria-label="購物車" aria-hidden="true"><div class="panel-header"><div><span class="eyebrow">YOUR LUNCH BAG</span><h2>購物車 <span id="panel-count">0</span></h2></div><button class="icon-button" data-close aria-label="關閉購物車">✕</button></div><div class="cutoff-note">◷　今天 11:00 截單・截單後送出店家訂單</div><div class="cart-items" id="cart-items"></div><div class="cart-empty" id="cart-empty"><span>🧺</span><h3>購物車還空空的</h3><p>去逛逛店家，挑幾樣喜歡的吧。</p><button class="text-button" data-close>去找店家　↗</button></div><div class="cart-footer hidden" id="cart-footer"><button class="clear-cart" id="clear-cart">清空購物車</button><div class="subtotal"><span>合計 <small>（不含現場付款費用）</small></span><b id="cart-total">$0</b></div><button class="button button-dark checkout-button" id="checkout">送出訂單 <span>→</span></button><small class="checkout-hint">送出後會依店家分別彙整，請於取餐時間自行取餐。</small></div></aside>
-  <dialog class="menu-dialog" id="menu-dialog"><div class="menu-cover" id="menu-cover"><button class="icon-button close-menu" data-menu-close aria-label="關閉菜單">✕</button><span class="menu-cover-emoji" id="menu-emoji">🍱</span></div><div class="menu-content"><div class="menu-shopline"><span class="tag" id="menu-tag">人氣便當</span><span class="pickup-label">⌖ 校門口取餐</span></div><h2 id="menu-title">店家</h2><p id="menu-description"></p><div class="menu-meta"><span>⏱ 約 15 分鐘備餐</span><span>✳ 團購限定優惠</span></div><div class="menu-list" id="menu-list"></div></div></dialog>
-  <dialog class="checkout-dialog" id="checkout-dialog"><button class="icon-button dialog-close" data-checkout-close aria-label="關閉">✕</button><div class="success-icon">✓</div><span class="eyebrow">ORDER RECEIVED</span><h2>午餐，幫你安排好了！</h2><p class="success-copy">訂單已依店家整理。截單後各店家會收到彙整數量，請在取餐時段自行前往取餐。</p><div class="pickup-card"><div><small>取餐時段</small><b>今天 12:10 – 12:40</b></div><div class="pickup-pin">⌖</div></div><div class="order-summary" id="order-summary"></div><div class="success-total"><span>訂單總額</span><b id="success-total">$0</b></div><button class="button button-dark success-close" data-checkout-close>知道了，謝謝 <span>✓</span></button></dialog>
+  <aside class="side-panel hidden" id="cart-panel" aria-label="購物車" aria-hidden="true">
+    <div class="panel-header">
+      <div><span class="eyebrow">YOUR LUNCH BAG</span>
+        <h2>購物車 <span id="panel-count">0</span></h2>
+      </div><button class="icon-button" data-close aria-label="關閉購物車">✕</button>
+    </div>
+    <div class="cutoff-note">◷　今天 11:00 截單・截單後送出店家訂單</div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-empty" id="cart-empty"><span>🧺</span>
+      <h3>購物車還空空的</h3>
+      <p>去逛逛店家，挑幾樣喜歡的吧。</p><button class="text-button" data-close>去找店家　↗</button>
+    </div>
+    <div class="cart-footer hidden" id="cart-footer"><button class="clear-cart" id="clear-cart">清空購物車</button>
+      <div class="subtotal"><span>合計 <small>（不含現場付款費用）</small></span><b id="cart-total">$0</b></div><button
+        class="button button-dark checkout-button" id="checkout">送出訂單 <span>→</span></button><small
+        class="checkout-hint">送出後會依店家分別彙整，請於取餐時間自行取餐。</small>
+    </div>
+  </aside>
+  <dialog class="menu-dialog" id="menu-dialog">
+    <div class="menu-cover" id="menu-cover"><button class="icon-button close-menu" data-menu-close
+        aria-label="關閉菜單">✕</button><span class="menu-cover-emoji" id="menu-emoji">🍱</span></div>
+    <div class="menu-content">
+      <div class="menu-shopline"><span class="tag" id="menu-tag">人氣便當</span><span class="pickup-label">⌖ 校門口取餐</span>
+      </div>
+      <h2 id="menu-title">店家</h2>
+      <p id="menu-description"></p>
+      <div class="menu-meta"><span>⏱ 約 15 分鐘備餐</span><span>✳ 團購限定優惠</span></div>
+      <div class="menu-list" id="menu-list"></div>
+    </div>
+  </dialog>
+  <dialog class="checkout-dialog" id="checkout-dialog"><button class="icon-button dialog-close" data-checkout-close
+      aria-label="關閉">✕</button>
+    <div class="success-icon">✓</div><span class="eyebrow">ORDER RECEIVED</span>
+    <h2>午餐，幫你安排好了！</h2>
+    <p class="success-copy">訂單已依店家整理。截單後各店家會收到彙整數量，請在取餐時段自行前往取餐。</p>
+    <div class="pickup-card">
+      <div><small>取餐時段</small><b>今天 12:10 – 12:40</b></div>
+      <div class="pickup-pin">⌖</div>
+    </div>
+    <div class="order-summary" id="order-summary"></div>
+    <div class="success-total"><span>訂單總額</span><b id="success-total">$0</b></div><button
+      class="button button-dark success-close" data-checkout-close>知道了，謝謝 <span>✓</span></button>
+  </dialog>
   <div class="toast" id="toast" role="status"></div>
   <script src="index.js"></script>
 </body>
+
 </html>
