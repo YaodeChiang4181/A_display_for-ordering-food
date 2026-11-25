@@ -1,12 +1,86 @@
 const stores = [
-  { id: '1', name: '店家 1・小日子食堂', category: '便當', kind: ['周一', '周三'], emoji: '🍱', color: '#e6edda', sticker: '人氣首選', rating: '4.9', desc: '每天現做的家常好味道', price: 85, tags: ['人氣便當', '可客製'], decor: ['✿', '〰'], menu: [['招牌日式唐揚雞飯', '酥脆雞腿排、溏心蛋與季節時蔬', 110], ['香煎鯖魚野菜餐盒', '炙燒鯖魚配上清爽野菜', 120], ['厚切豬排咖哩飯', '濃郁日式咖哩與現炸豬排', 125], ['蔬食豆腐菇菇飯', '香煎板豆腐與時令菇類', 95]] },
-  { id: '2', name: '店家 2・麵麵俱到', category: '麵食', kind: ['周二', '周四', '周日'], emoji: '🍜', color: '#f4e4cf', sticker: '暖心湯麵', rating: '4.8', desc: '一碗熱湯麵，補充上課能量', price: 90, tags: ['湯麵', '手作'], decor: ['〰', '✳'], menu: [['紅燒牛肉麵', '慢燉牛腱、白蘿蔔與手工麵', 140], ['香菇雞湯麵', '暖胃香菇雞湯搭配細麵', 105], ['麻醬乾拌麵', '濃香手作麻醬與脆口小黃瓜', 85], ['餛飩鮮肉湯麵', '每日手包鮮肉餛飩', 100]] },
-  { id: '3', name: '店家 3・綠日子沙拉', category: '輕食', kind: ['周三', '周五'], emoji: '🥗', color: '#e0ecdc', sticker: '清爽無負擔', rating: '4.9', desc: '新鮮蔬果，吃完剛好有精神', price: 95, tags: ['新鮮蔬果', '輕食'], decor: ['✳', '❋'], menu: [['酪梨雞胸能量碗', '舒肥雞胸、酪梨與藜麥', 135], ['炙燒鮭魚沙拉', '炙燒鮭魚搭配當季生菜', 155], ['香煎豆腐溫沙拉', '香煎豆腐與烤時蔬', 115], ['活力水果優格杯', '季節水果、堅果與希臘優格', 80]] },
-  { id: '4', name: '店家 4・手作飯糰研究所', category: '輕食', kind: ['周四', '周五', '周六'], emoji: '🍙', color: '#f1e8d4', sticker: '快速取餐', rating: '4.7', desc: '現包現做的飽足系手作飯糰', price: 55, tags: ['手作飯糰', '方便帶著走'], decor: ['✷', '〰'], menu: [['明太子鮭魚飯糰', '炙燒明太子與鮭魚碎肉', 75], ['炙燒燒肉飯糰', '日式醬燒豬肉與海苔', 65], ['香鬆玉子飯糰', '厚煎玉子燒與特調香鬆', 55], ['韓式泡菜豆腐飯糰', '微辣泡菜與板豆腐', 60]] },
-  { id: '5', name: '店家 5・午後一杯', category: '飲品', kind: ['周五', '周日'], emoji: '🧋', color: '#f1e2db', sticker: '第二杯有優惠', rating: '4.8', desc: '手搖飲與甜點，午休的小確幸', price: 45, tags: ['手搖飲', '甜點'], decor: ['✿', '☼'], menu: [['招牌珍珠鮮奶茶', '濃郁鮮奶茶配Q彈黑糖珍珠', 65], ['桂花青茶', '清香桂花與甘醇青茶', 45], ['檸檬冬瓜冰茶', '手熬冬瓜搭配新鮮檸檬', 50], ['小山園抹茶布丁', '濃郁抹茶與滑順布丁', 70]] },
-  { id: '6', name: '店家 6・烤好吃飯盒', category: '便當', kind: ['周六'], emoji: '🍛', color: '#f3e5d2', sticker: '本週新夥伴', rating: '4.6', desc: '炭香直火燒烤，配菜天天換', price: 90, tags: ['炭火燒烤', '份量十足'], decor: ['✷', '✳'], menu: [['炭烤蜜汁雞腿飯', '直火炭烤雞腿與每日配菜', 120], ['蔥鹽燒肉飯', '特製蔥鹽醬與炭香豬五花', 110], ['鹽烤鯖魚雙拼飯', '鹽烤鯖魚、唐揚雞雙拼', 135], ['烤時蔬菇菇飯', '季節蔬菜與香烤綜合菇', 100]] },
-  { id: '7', name: '店家 7・義式料理', category: '輕食', kind: ['周一', '周二', '周日'], emoji: '🍛', color: '#f3e5d2', sticker: '本週新夥伴', rating: '4.4', desc: '義心一義為了你', price: 90, tags: ['精心手工', '美味'], decor: ['✿', '✳'], menu: [['鮮蔬雞腿排義大利麵', '奶油海鮮義大利麵', 110], ['羅勒海鮮義大利麵', '青醬海鮮義大利麵', 130], ['燻雞起司捲', '火腿蛋三明治', 70], ['烤時蔬菇菇飯', '季節蔬菜與香烤綜合菇', 100]] }
-];
+  {
+    id: '1', name: '店家 1・小日子食堂', category: '便當', emoji: '🍱', color: '#e6edda', sticker: '人氣首選', rating: '4.9', desc: '每天現做的家常好味道', price: 85, tags: ['人氣便當', '可客製'], decor: ['✿', '〰'], menu: {
+      '周一': [
+        ['招牌日式唐揚雞飯', '酥脆雞腿排、溏心蛋與季節時蔬', 110],
+        ['香煎鯖魚野菜餐盒', '炙燒鯖魚配上清爽野菜', 120]
+      ],
+      '周三': [
+        ['招牌日式唐揚雞飯', '酥脆雞腿排、溏心蛋與季節時蔬', 110],
+        ['厚切豬排咖哩飯', '濃郁日式咖哩與現炸豬排', 125],
+        ['蔬食豆腐菇菇飯', '香煎板豆腐與時令菇類', 95]
+      ]
+    }
+  },
+  {
+    id: '2', name: '店家 2・麵麵俱到', category: '麵食', emoji: '🍜', color: '#f4e4cf', sticker: '暖心湯麵', rating: '4.8', desc: '一碗熱湯麵，補充上課能量', price: 90, tags: ['湯麵', '手作'], decor: ['〰', '✳'], menus: {
+      '周二': [
+        ['紅燒牛肉麵', '慢燉牛腱、白蘿蔔與手工麵', 140],
+        ['香菇雞湯麵', '暖胃香菇雞湯搭配細麵', 105]
+      ],
+      '周四': [
+        ['麻醬乾拌麵', '濃香手作麻醬與脆口小黃瓜', 85]
+      ],
+      '周日': [
+        ['餛飩鮮肉湯麵', '每日手包鮮肉餛飩', 100]
+      ]
+    }
+  },
+  {
+    id: '3', name: '店家 3・綠日子沙拉', category: '輕食', emoji: '🥗', color: '#e0ecdc', sticker: '清爽無負擔', rating: '4.9', desc: '新鮮蔬果，吃完剛好有精神', price: 95, tags: ['新鮮蔬果', '輕食'], decor: ['✳', '❋'], menus: {
+      '周三': [
+        ['酪梨雞胸能量碗', '舒肥雞胸、酪梨與藜麥', 135],
+        ['活力水果優格杯', '季節水果、堅果與希臘優格', 80]
+      ],
+      '周五': [['炙燒鮭魚沙拉', '炙燒鮭魚搭配當季生菜', 155],
+      ['香煎豆腐溫沙拉', '香煎豆腐與烤時蔬', 115]
+      ]
+    }
+  },
+  {
+    id: '4', name: '店家 4・手作飯糰研究所', category: '輕食', emoji: '🍙', color: '#f1e8d4', sticker: '快速取餐', rating: '4.7', desc: '現包現做的飽足系手作飯糰', price: 55, tags: ['手作飯糰', '方便帶著走'], decor: ['✷', '〰'], menus: {
+      '周四': [
+        ['明太子鮭魚飯糰', '炙燒明太子與鮭魚碎肉', 75],
+        ['炙燒燒肉飯糰', '日式醬燒豬肉與海苔', 65]
+      ],
+      '周五': [
+        ['香鬆玉子飯糰', '厚煎玉子燒與特調香鬆', 55]
+      ],
+      '周六': [
+        ['韓式泡菜豆腐飯糰', '微辣泡菜與板豆腐', 60]
+      ]
+    }
+  },
+  {
+    id: '5', name: '店家 5・午後一杯', category: '飲品', emoji: '🧋', color: '#f1e2db', sticker: '第二杯有優惠', rating: '4.8', desc: '手搖飲與甜點，午休的小確幸', price: 45, tags: ['手搖飲', '甜點'], decor: ['✿', '☼'], menus: {
+      '周五': [
+        ['招牌珍珠鮮奶茶', '濃郁鮮奶茶配Q彈黑糖珍珠', 65],
+        ['桂花青茶', '清香桂花與甘醇青茶', 45]
+      ],
+      '周日': [
+        ['檸檬冬瓜冰茶', '手熬冬瓜搭配新鮮檸檬', 50],
+        ['小山園抹茶布丁', '濃郁抹茶與滑順布丁', 70]]
+    }
+  },
+  {
+    id: '6', name: '店家 6・烤好吃飯盒', category: '便當', emoji: '🍛', color: '#f3e5d2', sticker: '本週新夥伴', rating: '4.6', desc: '炭香直火燒烤，配菜天天換', price: 90, tags: ['炭火燒烤', '份量十足'], decor: ['✷', '✳'], menus: {
+      '周六': [['炭烤蜜汁雞腿飯', '直火炭烤雞腿與每日配菜', 120], ['蔥鹽燒肉飯', '特製蔥鹽醬與炭香豬五花', 110], ['鹽烤鯖魚雙拼飯', '鹽烤鯖魚、唐揚雞雙拼', 135], ['烤時蔬菇菇飯', '季節蔬菜與香烤綜合菇', 100]]
+    }
+  },
+  {
+    id: '7', name: '店家 7・義式料理', category: '輕食', emoji: '🍛', color: '#f3e5d2', sticker: '本週新夥伴', rating: '4.4', desc: '義心一義為了你', price: 90, tags: ['精心手工', '美味'], decor: ['✿', '✳'], menus: {
+      '周一': [
+        ['鮮蔬雞腿排義大利麵', '奶油海鮮義大利麵', 110]
+      ],
+      '周二': [
+        ['羅勒海鮮義大利麵', '青醬海鮮義大利麵', 130],
+        ['燻雞起司捲', '火腿蛋三明治', 70]
+      ],
+      '周日': [
+        ['烤時蔬菇菇飯', '季節蔬菜與香烤綜合菇', 100]
+      ]
+    }
+  }];
 
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
@@ -26,12 +100,38 @@ function openMenu(id) {
   // 1. 判斷目前篩選器選中的星期
   const filterDay = $('#category-chips .selected')?.dataset.kind || '全部';
   // 若篩選器選了特定星期且該店有營業，就帶入該星期；否則預設選該店第一個營業日
-  selectedOrderDay = (filterDay !== '全部' && currentStore.kind.includes(filterDay))
+  selectedOrderDay = (filterDay !== '全部' && storeDays.includes(filterDay))
     ? filterDay
-    : currentStore.kind[0];
+    : storesDays[0];
 
   $('#menu-title').textContent = currentStore.name;
   $('#menu-description').textContent = currentStore.desc;
+  if ($('#menu-emoji')) $('#menu-emoji').textContent = currentStore.emoji;
+  if ($('#menu-cover')) $('#menu-cover').style.setProperty('--cover', currentStore.color);
+
+  const renderMenuItemsForDay = (day) => {
+    selectedOrderDay = day;
+    if ($('#menu-tag')) $('#menu-tag').textContent = `${day}限定菜單`;
+
+    const dayMenu = getDayMenu(currentStore, day);
+    $('#menu-list').innerHTML = dayMenu.map((item, i) => `
+      <article class="menu-item">
+        <div>
+          <h3>${escapeHtml(item[0])}</h3>
+          <p>${escapeHtml(item[1])}</p>
+        </div>
+        <div class="menu-item-price">${money(item[2])}</div>
+        <button type="button" class="add-item" data-index="${i}">＋ 加入 (${day})</button>
+      </article>
+    `).join('');
+
+    $$('.add-item', $('#menu-list')).forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = dayMenu[Number(btn.dataset.index)];
+        addToCart(currentStore.id, item[0], item[2], selectedOrderDay);
+      });
+    });
+  };
 
   // 2. 在菜單內渲染營業日切換按鈕（讓使用者可自由切換要訂哪一天）
   const daySelector = $('#menu-day-selector');
@@ -66,18 +166,19 @@ function openMenu(id) {
     btn.addEventListener('click', () => addToCart(currentStore.id, Number(btn.dataset.index), selectedOrderDay));
   });
 
+  renderMenuItemsForDay(selectedOrderDay);
   $('#menu-dialog').showModal();
 }
-function addToCart(storeId, itemIndex, day) {
-  const existing = cart.find(row => row.storeId === storeId && row.itemIndex === itemIndex && row.day === day);
+function addToCart(storeId, itemName, price, day) {
+  const existing = cart.find(row => row.storeId === storeId && row.itemName === itemName && row.day === day);
   if (existing) {
     existing.qty += 1;
   } else {
-    cart.push({ storeId, itemIndex, day, qty: 1 });
+    cart.push({ storeId, itemName, price, day, qty: 1 });
   }
   persist();
   renderCart();
-  showToast(`已加入 ${day} 訂單`);
+  showToast(`已加入 ${day}・${itemName}`);
 }
 
 function changeQty(storeId, itemIndex, day, delta) {
@@ -120,9 +221,15 @@ function renderStores() {
 
 const WEEK_DAYS = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
 
+let totalAmount = 0;
+
 function renderCart() {
   const totalQty = cart.reduce((sum, row) => sum + row.qty, 0);
+  const totalAmount = cart.reduce((sum, row) => sum + row.price * row_qty, 0);
   $('#cart-count').textContent = totalQty;
+  if ($('#panel-count')) $('#panel-count').textContent = totalQty ? `・${totalQty} 項` : '';
+  if ($('#cart-empty')) $('#cart-empty').classList.toggle('hidden', cart.length > 0);
+  if ($('#cart-footer')) $('#cart-footer').classList.toggle('hidden', cart.length === 0);
 
   if (!cart.length) {
     $('#cart-items').innerHTML = '<p class="empty-cart">購物車還是空的，快去挑幾樣吧！</p>';
@@ -133,41 +240,67 @@ function renderCart() {
   // 按照周一到周日排序
   const sortedCart = [...cart].sort((a, b) => WEEK_DAYS.indexOf(a.day) - WEEK_DAYS.indexOf(b.day));
 
-  let totalAmount = 0;
   $('#cart-items').innerHTML = sortedCart.map(row => {
     const store = findStore(row.storeId);
-    const item = store.menu[row.itemIndex];
-    const subtotal = item[2] * row.qty;
-    totalAmount += subtotal;
+    const availableDays = getAvailableDaysForItem(store, row.itemName);
+
+    const dayControlHtml = availableDays.length > 1
+      ? `<select class="cart-day-select" data-store="${row.storeId}" data-name="${escapeHtml(row.itemName)}" data-old-day="${row.day}" aria-label="調整預訂星期">
+          ${availableDays.map(d => `<option value="${d}" ${d === row.day ? 'selected' : ''}>${d}</option>`).join('')}
+         </select>`
+      : `<span class="cart-day-badge">[${row.day}限定]</span>`;
 
     return `
-      <div class="cart-row">
+      <article class="cart-row">
         <div>
-          <span class="cart-day-badge">[${row.day}]</span>
-          <strong>${escapeHtml(item[0])}</strong>
-          <small>${escapeHtml(store.name)} · ${money(item[2])}</small>
+          <div class="cart-row-name">${dayControlHtml} ${escapeHtml(row.itemName)}</div>
+          <div class="cart-row-detail">${escapeHtml(store.name)} · ${money(row.price)} × ${row.qty}</div>
+          <div class="cart-row-actions">
+            <div class="qty-control">
+              <button type="button" data-qty="-1" data-store="${row.storeId}" data-name="${escapeHtml(row.itemName)}" data-day="${row.day}">−</button>
+              <span>${row.qty}</span>
+              <button type="button" data-qty="1" data-store="${row.storeId}" data-name="${escapeHtml(row.itemName)}" data-day="${row.day}">＋</button>
+            </div>
+            <button type="button" class="remove-item" data-remove="${row.storeId}" data-name="${escapeHtml(row.itemName)}" data-day="${row.day}">刪除</button>
+          </div>
         </div>
-        <div class="cart-row-controls">
-          <button type="button" onclick="changeQty('${row.storeId}', ${row.itemIndex}, '${row.day}', -1)">-</button>
-          <span>${row.qty}</span>
-          <button type="button" onclick="changeQty('${row.storeId}', ${row.itemIndex}, '${row.day}', 1)">+</button>
-        </div>
-      </div>
+        <div class="cart-row-price">${money(row.price * row.qty)}</div>
+      </article>
     `;
   }).join('');
 
   $('#cart-total').textContent = money(totalAmount);
+
+  $$('.cart-day-select').forEach(sel => {
+    sel.addEventListener('change', () => {
+      changeCartDay(sel.dataset.store, sel.dataset.name, sel.dataset.oldDay, sel.value);
+    });
+  });
+  $$('[data-qty]').forEach(btn => {
+    btn.addEventListener('click', () => changeQty(btn.dataset.store, btn.dataset.name, btn.dataset.day, Number(btn.dataset.qty)));
+  });
+  $$('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', () => removeItem(btn.dataset.store, btn.dataset.name, btn.dataset.day));
+  });
+
 }
 
 
-function removeItem(storeId, index) { cart = cart.filter(item => !(item.storeId === storeId && item.itemIndex === index)); persist(); renderCart(); showToast('已刪除這項餐點') }
 function showCart() {
   $('#cart-panel').classList.remove('hidden'); $('#cart-panel').setAttribute('aria-hidden', 'false'); $('#overlay').classList.remove('hidden'); requestAnimationFrame(() => { $('#overlay').classList.add('visible'); $('#cart-panel').classList.add('visible') }); document.body.style.overflow = 'hidden';
 }
 function hideCart() {
   $('#overlay').classList.remove('visible'); $('#cart-panel').classList.remove('visible'); $('#cart-panel').setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; setTimeout(() => { $('#overlay').classList.add('hidden'); $('#cart-panel').classList.add('hidden') }, 220);
 }
-function showToast(message) { const toast = $('#toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2100) }
+function showToast(message) {
+  const toast = $('#toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2100)
+}
+function getAvailableDaysForItem(store, itemName) {
+  if (!store?.menus) return [];
+  return Object.keys(store.menus)
+    .filter(day => store.menus[day].some(item => item[0] === itemName))
+    .sort((a, b) => WEEK_DAYS.indexOf(a) - WEEK_DAYS.indexOf(b));
+}
 function checkout() {
   if (!cart.length) {
     showToast('先挑幾樣喜歡的餐點吧！');
@@ -249,6 +382,31 @@ function checkout() {
   renderCart();
   hideCart();
   $('#checkout-dialog').showModal();
+}
+
+function changeCartDay(storeId, itemName, oldDay, newDay) {
+  if (oldDay === newDay) return;
+  const sourceIndex = cart.findIndex(r => r.storeId === storeId && r.itemName === itemName && r.day === oldDay);
+  if (sourceIndex === -1) return;
+
+  const sourceRow = cart[sourceIndex];
+  const store = findStore(storeId);
+  // 取得新日期對應的正確價格（防止不同日有不同定價）
+  const targetMenuItem = getDayMenu(store, newDay).find(m => m[0] === itemName);
+  const updatedPrice = targetMenuItem ? targetMenuItem[2] : sourceRow.price;
+
+  const targetRow = cart.find(r => r.storeId === storeId && r.itemName === itemName && r.day === newDay);
+  if (targetRow) {
+    targetRow.qty += sourceRow.qty;
+    cart.splice(sourceIndex, 1);
+  } else {
+    sourceRow.day = newDay;
+    sourceRow.price = updatedPrice;
+  }
+
+  persist();
+  renderCart();
+  showToast(`已將「${itemName}」調整至 ${newDay}`);
 }
 
 $('#store-total').textContent = String(stores.length).padStart(2, '0'); renderStores(); renderCart();
