@@ -136,17 +136,17 @@ function openMenu(id) {
   // 2. 在菜單內渲染營業日切換按鈕（讓使用者可自由切換要訂哪一天）
   const daySelector = $('#menu-day-selector');
   if (daySelector) {
-    daySelector.innerHTML = currentStore.kind.map(day => `
-      <button type="button" class="day-pill ${day === selectedOrderDay ? 'selected' : ''}" data-day="${day}">
+    daySelector.innerHTML = storeDays.map(day => `
+      <button type="button" class="chip ${day === selectedOrderDay ? 'selected' : ''}" data-day="${day}">
         ${day}
       </button>
     `).join('');
 
-    $$('.day-pill', daySelector).forEach(btn => {
+    $$('[data-day]', daySelector).forEach(btn => {
       btn.addEventListener('click', () => {
-        $$('.day-pill', daySelector).forEach(b => b.classList.remove('selected'));
+        $$('[data-day]', daySelector).forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
-        selectedOrderDay = btn.dataset.day;
+        renderMenuItemsForDay(btn.dataset.day);
       });
     });
   }
@@ -205,10 +205,10 @@ function renderStores() {
   const category = $('#category-filter').value;
   const chosenDay = $('#category-chips .selected')?.dataset.kind || '全部';
   const filtered = stores.filter(store => {
-    const searchable = [store.name, store.desc, ...store.kind, ...store.menu.map(item => item[0])].join(' ').toLowerCase();
+    const searchable = [store.name, store.desc, ...storeDays, ...allDishNames].join(' ').toLowerCase();
     const matchTerm = !term || searchable.includes(term);
     const matchCategory = category === '全部' || store.category === category;
-    const matchDay = chosenDay === '全部' || store.kind.includes(chosenDay);
+    const matchDay = chosenDay === '全部' || storesDays.includes(chosenDay);
     return matchTerm && matchCategory && matchDay;
   });
   $('#store-grid').innerHTML = filtered.map(store => `<article class="store-card" data-store="${store.id}" tabindex="0" role="button" aria-label="打開${escapeHtml(store.name)}菜單">
